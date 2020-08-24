@@ -1,13 +1,15 @@
+import actions.BingAction
 import actions.HelpAction
 import actions.dart.PubAction
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonBuilder
 import kotlinx.serialization.json.long
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.alsoLogin
 import net.mamoe.mirai.event.*
 import net.mamoe.mirai.join
 import java.io.FileReader
+
+var bingKey: String? = ""
 
 suspend fun main() {
     val json = FileReader("config.json").use {
@@ -17,6 +19,8 @@ suspend fun main() {
     val qq = json["qq"]?.long
 
     val password = json["password"]?.primitive?.content
+
+    bingKey = json["bingKey"]?.primitive?.content
 
     checkNotNull(qq)
     checkNotNull(password)
@@ -41,7 +45,8 @@ suspend fun main() {
  */
 private val actions = arrayOf(
     HelpAction,
-    PubAction
+    PubAction,
+    BingAction
 )
 
 /**
