@@ -69,11 +69,12 @@ private fun registerActions() {
  * @see MessageSubscribersBuilder
  */
 fun Bot.messageDSL() {
-
-
     subscribeGroupMessages {
         for (action in HelpAction.actions) {
-            startsWith(action.prefix, onEvent = action::invoke)
+            if (action.noArg)
+                case(action.prefix, onEvent = action::invoke)
+            else
+                startsWith(action.prefix, onEvent = action::invoke)
         }
     }
 }

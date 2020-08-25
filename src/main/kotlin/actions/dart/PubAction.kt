@@ -1,11 +1,13 @@
 package actions.dart
 
-import HTMLParser
+import utils.HTMLParser
 import actions.Action
 import net.mamoe.mirai.message.GroupMessageEvent
 import java.net.URL
 
 object PubAction : Action {
+
+    override val noArg: Boolean = false
 
     override val prefix: String = "/pub"
 

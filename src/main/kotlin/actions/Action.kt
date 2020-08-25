@@ -7,6 +7,8 @@ import net.mamoe.mirai.message.GroupMessageEvent
  */
 interface Action {
 
+    val noArg: Boolean
+
     /**
      * 命令的前缀, 示例: `/help`
      */

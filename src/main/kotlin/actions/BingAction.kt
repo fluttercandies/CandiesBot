@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 object BingAction : Action {
+    override val noArg: Boolean = false
 
     override val prefix: String = "/bing"
 

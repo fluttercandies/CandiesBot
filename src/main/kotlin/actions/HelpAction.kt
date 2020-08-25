@@ -3,6 +3,7 @@ package actions
 import net.mamoe.mirai.message.GroupMessageEvent
 
 object HelpAction : Action {
+    override val noArg: Boolean = true
 
     override val prefix = "/help"
 
