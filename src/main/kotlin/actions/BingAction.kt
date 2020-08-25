@@ -29,9 +29,7 @@ object BingAction : Action {
                 val body = response.body!!.string();
                 val json = Gson().fromJson(body, BingSearchResult::class.java)
                 val result = json.webPages.value[0]
-                var msg = "咱帮你🔍到了这个\n${result.name}\n${result.snippet}"
-                event.reply(msg)
-                msg = result.url
+                val msg = "咱帮你🔍到了这个\n${result.name}\n${result.snippet}\n${result.url}"
                 event.reply(msg)
             } else
                 event.reply("什么东西坏掉了,大概是bing吧...不可能是咱!")
