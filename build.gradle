@@ -1,18 +1,19 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id 'application'
 }
 
 group 'org.example'
 version '1.0-SNAPSHOT'
 
 repositories {
-    maven {
-        url 'http://maven.aliyun.com/nexus/content/groups/public/'
-    }
-    maven {
-        url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
-    }
+    jcenter()
+    mavenCentral()
+}
+
+application {
+    mainClassName("CandiesBotKt")
 }
 
 dependencies {
