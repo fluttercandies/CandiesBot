@@ -1,7 +1,6 @@
-package actions.dart
+package actions
 
 import utils.HTMLParser
-import actions.Action
 import net.mamoe.mirai.message.GroupMessageEvent
 import java.net.URL
 
@@ -12,6 +11,10 @@ object PubAction : Action {
     override val prefix: String = "/pub"
 
     override suspend fun invoke(event: GroupMessageEvent, params: String) {
+        if (params.isBlank()) {
+            event.reply("不加参数是坏文明！")
+            return
+        }
         val pkgUrl = URL("https://pub.flutter-io.cn/packages?q=$params")
         val html = pkgUrl.readText()
         val packages = HTMLParser.getElementsByClass(html, "packages-item")
@@ -49,6 +52,7 @@ object PubAction : Action {
                 val sub = HTMLParser.getElementsByClass(it.html(), "tag-badge-sub")
                 s.appendln("${main[0].text()} ：${sub.text()}")
             }
+            s.appendln("使用 ：$name: ^$version")
             event.reply(s.trim().toString())
         }
     }

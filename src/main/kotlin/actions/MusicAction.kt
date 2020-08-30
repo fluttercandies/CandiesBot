@@ -13,38 +13,42 @@ object MusicAction : Action {
     override val prefix: String = "/music"
 
     override suspend fun invoke(event: GroupMessageEvent, params: String) {
+        if (params.isBlank()) {
+            event.reply("不加参数是坏文明！")
+            return
+        }
         val client = OkHttpClient.Builder()
             .build()
         val request =
             Request.Builder()
                 .apply {
-                    url("http://182.92.11.78:3000/search?keywords=$params&limit=1&type=1")
+                    url("http://inuyasha.love:8001/search?keywords=$params&limit=1&type=1")
                         .get()
                 }.build()
-        try {
-            val response = client.newCall(request).execute()
-            if (response.code == 200) {
-                val body = response.body!!.string();
-                val json = Gson().fromJson(body, MusicSearchResult::class.java)
-                if (json.result.songs.size >= 1) {
-                    val id = json.result.songs[0].id.toString()
-                    var name = json.result.songs[0].name
-                    if (name.length > 7)
-                        name = name.substring(0, 7) + "..."
-                    val url = "https://music.163.com/song/$id"
-                    val cover = ""
-                    var artist = "";
-                    json.result.songs[0].artists.map {
-                        if (it == json.result.songs[0].artists.last())
-                            artist += it.name
-                        else
-                            artist = artist + it.name + "/"
-                    }
-                    if (artist.length > 7)
-                        artist = artist.substring(0, 7) + "..."
 
-                    val msg = "《$name》\n$artist\n$url"
-                    event.reply(msg)
+        val response = client.newCall(request).execute()
+        if (response.code == 200) {
+            val body = response.body!!.string();
+            val json = Gson().fromJson(body, MusicSearchResult::class.java)
+            if (json.result.songs.size >= 1) {
+                val id = json.result.songs[0].id.toString()
+                var name = json.result.songs[0].name
+                if (name.length > 7)
+                    name = name.substring(0, 7) + "..."
+                val url = "https://music.163.com/song/$id"
+                val cover = ""
+                var artist = "";
+                json.result.songs[0].artists.map {
+                    if (it == json.result.songs[0].artists.last())
+                        artist += it.name
+                    else
+                        artist = artist + it.name + "/"
+                }
+                if (artist.length > 7)
+                    artist = artist.substring(0, 7) + "..."
+
+                val msg = "《$name》\n$artist\n$url"
+                event.reply(msg)
 //                    val xml =
 //                        """ <?xml version='1.0' encoding='UTF-8'?><msg serviceID="60" templateID="1" action="web" brief="[分享] $name" url="$url"><item layout="2"><audio cover="$cover" src="" /><title>$name</title><summary>$artist</summary></item><source url="$url" /></msg> """.trimIndent()
 //
@@ -56,11 +60,7 @@ object MusicAction : Action {
 //                            xml
 //                        )
 //                    )
-                }
-            } else
-                event.reply("什么东西坏掉了,大概是网易云吧...不可能是咱!")
-        } catch (e: Exception) {
-            event.reply("什么东西坏掉了,大概是网易云吧...不可能是咱!")
+            }
         }
     }
 

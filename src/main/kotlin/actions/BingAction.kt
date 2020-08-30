@@ -14,6 +14,10 @@ object BingAction : Action {
     override val prefix: String = "/bing"
 
     override suspend fun invoke(event: GroupMessageEvent, params: String) {
+        if (params.isBlank()) {
+            event.reply("不加参数是坏文明！")
+            return
+        }
         val client = OkHttpClient.Builder()
             .build()
         val request =
@@ -23,18 +27,14 @@ object BingAction : Action {
                         .addHeader("Ocp-Apim-Subscription-Key", bingKey!!)
                         .get()
                 }.build()
-        try {
-            val response = client.newCall(request).execute()
-            if (response.code == 200) {
-                val body = response.body!!.string();
-                val json = Gson().fromJson(body, BingSearchResult::class.java)
-                val result = json.webPages.value[0]
-                val msg = "咱帮你🔍到了这个\n${result.name}\n${result.snippet}\n${result.url}"
-                event.reply(msg)
-            } else
-                event.reply("什么东西坏掉了,大概是bing吧...不可能是咱!")
-        } catch (e: Exception) {
-            event.reply("什么东西坏掉了,大概是bing吧...不可能是咱!")
+
+        val response = client.newCall(request).execute()
+        if (response.code == 200) {
+            val body = response.body!!.string();
+            val json = Gson().fromJson(body, BingSearchResult::class.java)
+            val result = json.webPages.value[0]
+            val msg = "咱帮你🔍到了这个\n${result.name}\n${result.snippet}\n${result.url}"
+            event.reply(msg)
         }
 
     }

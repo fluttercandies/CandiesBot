@@ -19,7 +19,7 @@ object HelpAction : Action {
 
     override fun helperText(): String {
         val sb = StringBuilder()
-
+        sb.appendln("以下为本机器人使用帮助")
         sb.appendln("/help 显示本帮助")
         for (action in actions) {
             if (action != this) {

@@ -1,7 +1,7 @@
 import actions.BingAction
 import actions.HelpAction
 import actions.MusicAction
-import actions.dart.PubAction
+import actions.PubAction
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -76,9 +76,9 @@ fun Bot.messageDSL() {
     subscribeGroupMessages {
         for (action in HelpAction.actions) {
             if (action.noArg)
-                case(action.prefix, onEvent = action::invoke)
+                case(action.prefix, trim = true, onEvent = action::invoke)
             else
-                startsWith(action.prefix, onEvent = action::invoke)
+                startsWith(action.prefix, trim = true, onEvent = action::invoke)
         }
     }
 }
