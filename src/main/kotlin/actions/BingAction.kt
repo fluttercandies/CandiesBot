@@ -5,6 +5,7 @@ import bingKey
 import com.google.gson.Gson
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.At
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
@@ -23,7 +24,7 @@ object BingAction : Action {
         val request =
             Request.Builder()
                 .apply {
-                    url("https://api.cognitive.microsoft.com/bing/v7.0/search?q=$params&count=1&mkt=zh-CN")
+                    url(makeUrl(params.trim()))
                         .addHeader("Ocp-Apim-Subscription-Key", bingKey!!)
                         .get()
                 }.build()
@@ -37,6 +38,17 @@ object BingAction : Action {
             event.reply(msg)
         }
 
+    }
+
+    private fun makeUrl(keyword: String): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme("https")
+            .host("api.cognitive.microsoft.com")
+            .addPathSegments("bing/v7.0/search")
+            .addQueryParameter("q", keyword)
+            .addQueryParameter("count", "1")
+            .addQueryParameter("mkt", "zh-CN")
+            .build()
     }
 
     override fun helperText(): String {
