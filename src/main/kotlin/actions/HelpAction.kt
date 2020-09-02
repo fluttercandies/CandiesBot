@@ -5,7 +5,7 @@ import net.mamoe.mirai.message.GroupMessageEvent
 object HelpAction : Action {
     override val noArg: Boolean = true
 
-    override val prefix = "/help"
+    override val prefix: List<String> = listOf("/help")
 
     val actions = ArrayList<Action>()
 

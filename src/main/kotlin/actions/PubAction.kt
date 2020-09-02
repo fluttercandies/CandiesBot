@@ -8,7 +8,7 @@ object PubAction : Action {
 
     override val noArg: Boolean = false
 
-    override val prefix: String = "/pub"
+    override val prefix: List<String> = listOf("/pub", "pub", "搜库")
 
     override suspend fun invoke(event: GroupMessageEvent, params: String) {
         if (params.isBlank()) {
@@ -55,9 +55,5 @@ object PubAction : Action {
             s.appendln("使用 ：$name: ^$version")
             event.reply(s.trim().toString())
         }
-    }
-
-    override fun helperText(): String {
-        return "/pub 包名"
     }
 }

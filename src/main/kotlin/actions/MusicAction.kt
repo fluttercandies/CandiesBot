@@ -10,7 +10,7 @@ import okhttp3.Request
 object MusicAction : Action {
 
     override val noArg: Boolean = false
-    override val prefix: String = "/music"
+    override val prefix: List<String> = listOf("/music", "music", "音乐", "搜歌")
 
     override suspend fun invoke(event: GroupMessageEvent, params: String) {
         if (params.isBlank()) {
@@ -62,9 +62,5 @@ object MusicAction : Action {
 //                    )
             }
         }
-    }
-
-    override fun helperText(): String {
-        return "/music 关键词"
     }
 }

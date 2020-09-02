@@ -12,7 +12,7 @@ import okhttp3.Request
 object BingAction : Action {
     override val noArg: Boolean = false
 
-    override val prefix: String = "/bing"
+    override val prefix: List<String> = listOf("/bing", "bing", "搜索", "必应")
 
     override suspend fun invoke(event: GroupMessageEvent, params: String) {
         if (params.isBlank()) {
@@ -49,9 +49,5 @@ object BingAction : Action {
             .addQueryParameter("count", "1")
             .addQueryParameter("mkt", "zh-CN")
             .build()
-    }
-
-    override fun helperText(): String {
-        return "/bing 关键词"
     }
 }

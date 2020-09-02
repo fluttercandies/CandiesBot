@@ -1,18 +1,17 @@
-import actions.BingAction
-import actions.HelpAction
-import actions.MusicAction
-import actions.PubAction
+import actions.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.alsoLogin
-import net.mamoe.mirai.event.*
+import net.mamoe.mirai.event.subscribeGroupMessages
 import net.mamoe.mirai.join
 import java.io.FileReader
 
 var bingKey: String? = ""
+var transAppId: String? = ""
+var transKey: String? = ""
 
 suspend fun main() {
     val json = FileReader("config.json").use {
@@ -24,6 +23,8 @@ suspend fun main() {
     val password = json["password"]?.jsonPrimitive?.content
 
     bingKey = json["bingKey"]?.jsonPrimitive?.content
+    transAppId = json["transAppId"]?.jsonPrimitive?.content
+    transKey = json["transKey"]?.jsonPrimitive?.content
 
     checkNotNull(qq)
     checkNotNull(password)
@@ -50,6 +51,7 @@ private val actions = arrayOf(
     HelpAction,
     PubAction,
     BingAction,
+    TransAction,
     MusicAction
 )
 
@@ -76,9 +78,13 @@ fun Bot.messageDSL() {
     subscribeGroupMessages {
         for (action in HelpAction.actions) {
             if (action.noArg)
-                case(action.prefix, trim = true, onEvent = action::invoke)
+                action.prefix.forEach {
+                    case(it, trim = true, onEvent = action::invoke)
+                }
             else
-                startsWith(action.prefix, trim = true, onEvent = action::invoke)
+                action.prefix.forEach {
+                    startsWith(it, trim = true, onEvent = action::invoke)
+                }
         }
     }
 }
