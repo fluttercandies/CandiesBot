@@ -79,11 +79,11 @@ fun Bot.messageDSL() {
         for (action in HelpAction.actions) {
             if (action.noArg)
                 action.prefix.forEach {
-                    case(it, trim = true, onEvent = action::invoke)
+                    case(it, trim = false, onEvent = action::invoke)
                 }
             else
                 action.prefix.forEach {
-                    startsWith(it, trim = true, onEvent = action::invoke)
+                    startsWith("$it ", trim = false, onEvent = action::invoke)
                 }
         }
     }

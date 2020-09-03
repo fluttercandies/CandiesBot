@@ -26,7 +26,6 @@ object HelpAction : Action {
                 sb.appendln(action.helperText())
             }
         }
-
         return sb.toString().trim()
     }
 }
