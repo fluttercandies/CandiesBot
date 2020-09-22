@@ -2,7 +2,7 @@ package actions
 
 import utils.HTMLParser
 import net.mamoe.mirai.message.GroupMessageEvent
-import java.net.URL
+import okhttp3.HttpUrl
 
 object PubAction : Action {
 
@@ -15,7 +15,14 @@ object PubAction : Action {
             event.reply("不加参数是坏文明！")
             return
         }
-        val pkgUrl = URL("https://pub.flutter-io.cn/packages?q=$params")
+        val pkgUrl = HttpUrl.Builder()
+            .scheme("https")
+            .host("pub.flutter-io.cn")
+            .addPathSegment("packages")
+            .addQueryParameter("q", params)
+            .build()
+            .toUrl()
+
         val html = pkgUrl.readText()
         val packages = HTMLParser.getElementsByClass(html, "packages-item")
         if (packages.size > 0) {
