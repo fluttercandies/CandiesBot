@@ -51,8 +51,9 @@ private val actions = arrayOf(
     HelpAction,
     PubAction,
     BingAction,
-    TransAction,
-    MusicAction
+    DocAction,
+    TransAction
+//    MusicAction
 )
 
 /**

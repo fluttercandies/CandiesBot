@@ -15,6 +15,7 @@ object PubAction : Action {
             event.reply("不加参数是坏文明！")
             return
         }
+
         val pkgUrl = HttpUrl.Builder()
             .scheme("https")
             .host("pub.flutter-io.cn")
